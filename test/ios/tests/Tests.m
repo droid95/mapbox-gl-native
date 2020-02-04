@@ -24,8 +24,8 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL fileFound = [fileManager fileExistsAtPath: testResult];
     XCTAssert(fileFound, @"Test result file '%@' does not exit", testResult);
-    NSURL *styleURL = [NSURL fileURLWithPath:testResult];
-    XCTAttachment *attachment1URL = [XCTAttachment attachmentWithContentsOfFileAtURL: styleURL];
+    NSURL *resultURL = [NSURL fileURLWithPath:testResult];
+    XCTAttachment *attachment1URL = [XCTAttachment attachmentWithContentsOfFileAtURL: resultURL];
     XCTAssert(attachment1URL, @"Failed to attach test result '%@'", testResult);
     attachment1URL.lifetime = XCTAttachmentLifetimeKeepAlways;
     [self addAttachment:attachment1URL];

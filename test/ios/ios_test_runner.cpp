@@ -21,7 +21,7 @@ bool TestRunner::startTest(const std::string& basePath) {
     argv.push_back(nullptr);
 
     if (chdir(basePath.c_str())) {
-        mbgl::Log::Error(mbgl::Event::General, "Failed to change the directory to /sdcard");
+        mbgl::Log::Error(mbgl::Event::General, "Failed to change the directory to " + basePath);
     }
 
     mbgl::Log::Info(mbgl::Event::General, "Start TestRunner");
