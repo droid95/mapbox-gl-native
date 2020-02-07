@@ -134,6 +134,12 @@ else()
         COMPILE_FLAGS
         -Wno-shadow
     )
+    set_source_files_properties(
+        ${PROJECT_SOURCE_DIR}/test/src/mbgl/test/http_server.cpp
+        PROPERTIES
+        COMPILE_OPTIONS
+        $<$<STREQUAL:${CMAKE_SYSTEM_NAME},iOS>:-Wno-shorten-64-to-32>
+    )
     target_include_directories(
         mbgl-test
         PRIVATE ${PROJECT_SOURCE_DIR}/vendor/cpp-httplib

@@ -192,30 +192,35 @@ if(MBGL_IOS_RENDER_TEST)
 endif()
 
 if(MBGL_IOS_UNIT_TEST)
-    execute_process(COMMAND ditto ${MBGL_ROOT}/test/fixtures ${PROJECT_BINARY_DIR}/test-data/test/fixtures)
-    execute_process(COMMAND ditto ${MBGL_ROOT}/mapbox-gl-js/src/style-spec/reference ${PROJECT_BINARY_DIR}/test-data/mapbox-gl-js/src/style-spec/reference)
+    execute_process(COMMAND ditto ${PROJECT_SOURCE_DIR}/test/fixtures ${CMAKE_CURRENT_BINARY_DIR}/test-data/test/fixtures)
+    execute_process(
+        COMMAND
+            ditto ${PROJECT_SOURCE_DIR}/mapbox-gl-js/src/style-spec/reference
+            ${CMAKE_CURRENT_BINARY_DIR}/test-data/mapbox-gl-js/src/style-spec/reference
+    )
 
-    set(RESOURCES ${MBGL_ROOT}/test/ios/Main.storyboard ${MBGL_ROOT}/test/ios/LaunchScreen.storyboard ${PROJECT_BINARY_DIR}/test-data/test ${PROJECT_BINARY_DIR}/test-data/mapbox-gl-js)
+    set(
+        RESOURCES
+        ${PROJECT_SOURCE_DIR}/test/ios/Main.storyboard
+        ${PROJECT_SOURCE_DIR}/test/ios/LaunchScreen.storyboard
+        ${CMAKE_CURRENT_BINARY_DIR}/test-data/test
+        ${CMAKE_CURRENT_BINARY_DIR}/test-data/mapbox-gl-js
+    )
 
     add_executable(
         UnitTestsApp
-        ${MBGL_ROOT}/test/ios/ios_test_runner.hpp
-        ${MBGL_ROOT}/test/ios/ios_test_runner.cpp
-        ${MBGL_ROOT}/test/ios/AppDelegate.h
-        ${MBGL_ROOT}/test/ios/AppDelegate.m
-        ${MBGL_ROOT}/test/ios/ViewController.h
-        ${MBGL_ROOT}/test/ios/ViewController.m
-        ${MBGL_ROOT}/test/ios/iosTestRunner.h
-        ${MBGL_ROOT}/test/ios/iosTestRunner.mm
-        ${MBGL_ROOT}/test/ios/main.m
+        ${PROJECT_SOURCE_DIR}/test/ios/ios_test_runner.hpp
+        ${PROJECT_SOURCE_DIR}/test/ios/ios_test_runner.cpp
+        ${PROJECT_SOURCE_DIR}/test/ios/AppDelegate.h
+        ${PROJECT_SOURCE_DIR}/test/ios/AppDelegate.m
+        ${PROJECT_SOURCE_DIR}/test/ios/ViewController.h
+        ${PROJECT_SOURCE_DIR}/test/ios/ViewController.m
+        ${PROJECT_SOURCE_DIR}/test/ios/iosTestRunner.h
+        ${PROJECT_SOURCE_DIR}/test/ios/iosTestRunner.mm
+        ${PROJECT_SOURCE_DIR}/test/ios/main.m
         ${RESOURCES}
     )
     initialize_ios_target(UnitTestsApp)
-
-    target_compile_options(
-        UnitTestsApp
-        PRIVATE -Wno-shorten-64-to-32
-    )
 
     set_target_properties(
         UnitTestsApp
@@ -225,29 +230,29 @@ if(MBGL_IOS_UNIT_TEST)
             MACOSX_BUNDLE_IDENTIFIER
             com.mapbox.UnitTestsApp
             MACOSX_BUNDLE_INFO_PLIST
-            ${MBGL_ROOT}/test/ios/Info.plist
+            ${PROJECT_SOURCE_DIR}/test/ios/Info.plist
             RESOURCE
             "${RESOURCES}"
     )
 
     target_include_directories(
         UnitTestsApp
-        PUBLIC {MBGL_ROOT}/test/include ${MBGL_ROOT}/include
+        PUBLIC {MBGL_ROOT}/test/include ${PROJECT_SOURCE_DIR}/include
     )
 
     target_include_directories(
         UnitTestsApp
         PRIVATE
-            ${MBGL_ROOT}/platform/darwin/src
-            ${MBGL_ROOT}/platform/darwin/include
-            ${MBGL_ROOT}/platform/darwin/include/mbgl/interface/
-            ${MBGL_ROOT}/platform/default/include
-            ${MBGL_ROOT}/src
+            ${PROJECT_SOURCE_DIR}/platform/darwin/src
+            ${PROJECT_SOURCE_DIR}/platform/darwin/include
+            ${PROJECT_SOURCE_DIR}/platform/darwin/include/mbgl/interface/
+            ${PROJECT_SOURCE_DIR}/platform/default/include
+            ${PROJECT_SOURCE_DIR}/src
     )
 
     target_include_directories(
         UnitTestsApp
-        PUBLIC ${MBGL_ROOT}/test/ios
+        PUBLIC ${PROJECT_SOURCE_DIR}/test/ios
     )
 
     target_link_libraries(
@@ -260,16 +265,16 @@ if(MBGL_IOS_UNIT_TEST)
             "-framework QuartzCore"
             "-framework UIKit"
             mbgl-compiler-options
-            -Wl,-force_load mbgl-test
+            -Wl,-force_load
+            mbgl-test
     )
 
     set_target_properties(UnitTestsApp PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
     set_target_properties(UnitTestsApp PROPERTIES XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
 
-
     find_package(XCTest REQUIRED)
 
-    xctest_add_bundle(UnitTestsAppTests UnitTestsApp ${MBGL_ROOT}/test/ios/tests/Tests.m)
+    xctest_add_bundle(UnitTestsAppTests UnitTestsApp ${PROJECT_SOURCE_DIR}/test/ios/tests/Tests.m)
 
     set_target_properties(
         UnitTestsAppTests
@@ -282,12 +287,12 @@ if(MBGL_IOS_UNIT_TEST)
 
     target_include_directories(
         UnitTestsAppTests
-        PUBLIC ${MBGL_ROOT}/test/ios
+        PUBLIC ${PROJECT_SOURCE_DIR}/test/ios
     )
 
     xctest_add_test(XCTest.UnitTestsApp UnitTestsAppTests)
 
-    set_target_properties(UnitTestsAppTests PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${MBGL_ROOT}/test/ios/tests/Info.plist)
+    set_target_properties(UnitTestsAppTests PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${PROJECT_SOURCE_DIR}/test/ios/tests/Info.plist)
     set_target_properties(UnitTestsAppTests PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "")
     set_target_properties(UnitTestsAppTests PROPERTIES XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
 endif()

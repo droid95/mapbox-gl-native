@@ -7,7 +7,7 @@
 #if ANDROID
     #define TEST_READ_ONLY 0
 #elif TARGET_OS_IOS
-    #define TEST_READ_ONLY 0
+#define TEST_READ_ONLY 0
 #else
     #define TEST_READ_ONLY 0
     #ifndef TEST_HAS_SERVER

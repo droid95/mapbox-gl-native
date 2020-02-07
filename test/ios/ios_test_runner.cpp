@@ -25,7 +25,7 @@ bool TestRunner::startTest(const std::string& basePath) {
     }
 
     mbgl::Log::Info(mbgl::Event::General, "Start TestRunner");
-    int status = mbgl::runTests(argv.size(), argv.data());
+    int status = mbgl::runTests(static_cast<uint32_t>(argv.size()), argv.data());
     mbgl::Log::Info(mbgl::Event::General, "TestRunner finished with status: '%d'", status);
     success = status ? false : true;
 

@@ -237,7 +237,7 @@ commands:
           name: Build
           command: |
             ccache --zero-stats --max-size=2G
-            cmake --build build -j $(nproc) << parameters.build_params >>
+            cmake --build build -j $(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null) << parameters.build_params >>
             ccache --show-stats
   install:
     steps:
@@ -321,8 +321,8 @@ jobs:
       - run:
           name: Build
           command: |
-            cmake . -B Build -G Xcode -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_SYSROOT=iphonesimulator
-            cd Build && xcodebuild -sdk iphonesimulator -project Mapbox\ GL\ Native.xcodeproj -configuration Release
+            cmake . -B Build -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=arm64e -DCMAKE_OSX_SYSROOT=iphoneos
+            cmake --build Build --config Release
       - save
   ios-render-test-runner:
     executor: macos-11_0_0
@@ -418,8 +418,8 @@ jobs:
           command: |
             cd test/ios
             ccache --zero-stats --max-size=2G
-            cmake ../../next -B Build -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos -DMBGL_IOS_UNIT_TEST=1 -DCMAKE_OSX_ARCHITECTURES=arm64
-            cmake --build Build --target UnitTestsApp UnitTestsAppTests --config Release
+            cmake ../.. -B Build -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos -DMBGL_IOS_UNIT_TEST=1 -DCMAKE_OSX_ARCHITECTURES=arm64e
+            cmake --build Build --config Release
             ccache --show-stats
       - run:
           name: Codesign UnitTestsApp for running on a physical device
@@ -464,7 +464,7 @@ jobs:
               cd unit-test-app/TestLogs
               xcparse attachments *.xcresult && ls
               cd ../.. && mkdir -p /tmp/tests/unit-test
-              if ls unit-test-app/TestLogs/*.xml 1> /dev/null 2>&1; then cp unit-test-app/TestLogs/*.xml /tmp/tests/unit-test; fi
+              if ls unit-test-app/TestLogs/*.xml 1> /dev/null 2>&1; then cp unit-test-app/TestLogs/*.xml /tmp/tests/unit-test/results.xml; fi
             fi
 
       - save
