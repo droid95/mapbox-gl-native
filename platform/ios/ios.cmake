@@ -107,17 +107,25 @@ if(MBGL_IOS_RENDER_TEST)
     set(RESOURCES ${PROJECT_SOURCE_DIR}/render-test/ios/Main.storyboard ${PROJECT_SOURCE_DIR}/render-test/ios/LaunchScreen.storyboard
                   ${PROJECT_SOURCE_DIR}/test-data)
 
+    set(
+        RESOURCES
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/Main.storyboard
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/LaunchScreen.storyboard
+        ${PROJECT_SOURCE_DIR}/test-data
+    )
+
+
     add_executable(
         RenderTestApp
-        ${PROJECT_SOURCE_DIR}/render-test/ios/ios_test_runner.hpp
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/ios_test_runner.hpp
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/AppDelegate.h
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/AppDelegate.m
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/ViewController.h
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/ViewController.m
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/main.m
         ${PROJECT_SOURCE_DIR}/render-test/ios/ios_test_runner.cpp
-        ${PROJECT_SOURCE_DIR}/render-test/ios/AppDelegate.h
-        ${PROJECT_SOURCE_DIR}/render-test/ios/AppDelegate.m
-        ${PROJECT_SOURCE_DIR}/render-test/ios/ViewController.h
-        ${PROJECT_SOURCE_DIR}/render-test/ios/ViewController.m
         ${PROJECT_SOURCE_DIR}/render-test/ios/iosTestRunner.h
         ${PROJECT_SOURCE_DIR}/render-test/ios/iosTestRunner.mm
-        ${PROJECT_SOURCE_DIR}/render-test/ios/main.m
         ${RESOURCES}
     )
     initialize_ios_target(RenderTestApp)
@@ -201,23 +209,23 @@ if(MBGL_IOS_UNIT_TEST)
 
     set(
         RESOURCES
-        ${PROJECT_SOURCE_DIR}/test/ios/Main.storyboard
-        ${PROJECT_SOURCE_DIR}/test/ios/LaunchScreen.storyboard
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/Main.storyboard
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/LaunchScreen.storyboard
         ${CMAKE_CURRENT_BINARY_DIR}/test-data/test
         ${CMAKE_CURRENT_BINARY_DIR}/test-data/mapbox-gl-js
     )
 
     add_executable(
         UnitTestsApp
-        ${PROJECT_SOURCE_DIR}/test/ios/ios_test_runner.hpp
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/ios_test_runner.hpp
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/AppDelegate.h
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/AppDelegate.m
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/ViewController.h
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/ViewController.m
+        ${PROJECT_SOURCE_DIR}/platform/ios/test/common/main.m
         ${PROJECT_SOURCE_DIR}/test/ios/ios_test_runner.cpp
-        ${PROJECT_SOURCE_DIR}/test/ios/AppDelegate.h
-        ${PROJECT_SOURCE_DIR}/test/ios/AppDelegate.m
-        ${PROJECT_SOURCE_DIR}/test/ios/ViewController.h
-        ${PROJECT_SOURCE_DIR}/test/ios/ViewController.m
         ${PROJECT_SOURCE_DIR}/test/ios/iosTestRunner.h
         ${PROJECT_SOURCE_DIR}/test/ios/iosTestRunner.mm
-        ${PROJECT_SOURCE_DIR}/test/ios/main.m
         ${RESOURCES}
     )
     initialize_ios_target(UnitTestsApp)
@@ -237,7 +245,11 @@ if(MBGL_IOS_UNIT_TEST)
 
     target_include_directories(
         UnitTestsApp
-        PUBLIC {MBGL_ROOT}/test/include ${PROJECT_SOURCE_DIR}/include
+        PUBLIC
+            ${PROJECT_SOURCE_DIR}/include
+            ${PROJECT_SOURCE_DIR}/platform/ios/test/common
+            ${PROJECT_SOURCE_DIR}/test/include
+            ${PROJECT_SOURCE_DIR}/test/ios
     )
 
     target_include_directories(
@@ -248,11 +260,6 @@ if(MBGL_IOS_UNIT_TEST)
             ${PROJECT_SOURCE_DIR}/platform/darwin/include/mbgl/interface/
             ${PROJECT_SOURCE_DIR}/platform/default/include
             ${PROJECT_SOURCE_DIR}/src
-    )
-
-    target_include_directories(
-        UnitTestsApp
-        PUBLIC ${PROJECT_SOURCE_DIR}/test/ios
     )
 
     target_link_libraries(
