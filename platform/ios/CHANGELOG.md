@@ -5,6 +5,7 @@ Mapbox welcomes participation and contributions from everyone. Please read [CONT
 ## master
 * Added support for [image expression](https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-types-image) in core library. Runtime APIs for image expression will be implemented separately. ([#15877](https://github.com/mapbox/mapbox-gl-native/pull/15877))
 * Make network requests for expired resources lower priority than requests for new resources. ([#15950](https://github.com/mapbox/mapbox-gl-native/pull/15950))
+* Added support for `within expression` in core library. Implemented the use of `within expression` with paint propery and filter expression. Support for using `within expression` with layout propery will be implemented separately. ([#16157](https://github.com/mapbox/mapbox-gl-native/pull/16157))
 
 ### Other changes
 * Convert GeoJSON features to tiles for the loaded source description in a background thread and thus unblock the UI thread ([#15885](https://github.com/mapbox/mapbox-gl-native/pull/15885))

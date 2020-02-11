@@ -21,6 +21,7 @@
 * Fixed an issue that `maxzoom` in style `Sources` option was ignored when URL resource is provided. It may cause problems such as extra tiles downloading at higher zoom level than `maxzoom`, or problems that wrong setting of `overscaledZ` in `OverscaledTileID` that will be passed to `SymbolLayout`, leading wrong rendering appearance. ([#15581](https://github.com/mapbox/mapbox-gl-native/pull/15581))
 * Fixed a crash when `-[MGLOfflinePack invalidate]` is called on different threads. ([#15582](https://github.com/mapbox/mapbox-gl-native/pull/15582))
 * Make network requests for expired resources lower priority than requests for new resources. ([#15950](https://github.com/mapbox/mapbox-gl-native/pull/15950))
+* Added support for `within expression` in core library. Implemented the use of `within expression` with paint propery and filter expression. Support for using `within expression` with layout propery will be implemented separately. ([#16157](https://github.com/mapbox/mapbox-gl-native/pull/16157))
 
 ### Styles and rendering
 
